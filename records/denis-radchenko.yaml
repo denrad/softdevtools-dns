@@ -1,0 +1,4 @@
+subdomain: denis-radchenko
+type: CNAME
+target: denrad.github.io
+repository: https://github.com/denrad/softdevtools-pages-pilot
