@@ -1,0 +1,8 @@
+# Names reserved for course infrastructure and common services.
+admin
+api
+dns
+mail
+ns1
+ns2
+www
