@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   apply:
-    # Enabled for the owner-only private pilot; protect main before student access.
+    # DNS writes run only for merged PRs on the trusted default branch.
     if: github.event.pull_request.merged == true && vars.CLOUDFLARE_DNS_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
