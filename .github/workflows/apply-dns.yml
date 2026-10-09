@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   apply:
-    # Remains off until main is protected and the pilot dry-run has passed.
+    # Enabled for the owner-only private pilot; protect main before student access.
     if: github.event.pull_request.merged == true && vars.CLOUDFLARE_DNS_DEPLOY_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
