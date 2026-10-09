@@ -2,7 +2,7 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from scripts.validate import parse_record
+from scripts.validate import parse_record, validate_records
 
 
 VALID = """subdomain: ivan
@@ -66,6 +66,70 @@ class ParseRecordTests(unittest.TestCase):
         record, errors = self.parse(VALID + " " * 8192)
         self.assertIsNone(record)
         self.assertIn("size", " ".join(errors).lower())
+
+
+class ValidateRecordsTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        (self.root / "records").mkdir()
+        (self.root / "config").mkdir()
+        (self.root / "config" / "reserved-names.txt").write_text(
+            "# Teacher-owned names\nwww\nadmin\n", encoding="utf-8"
+        )
+
+    def write(self, filename: str, content: str = VALID):
+        (self.root / "records" / filename).write_text(content, encoding="utf-8")
+
+    def test_valid_tree_and_empty_tree(self):
+        self.assertEqual(validate_records(self.root), [])
+        self.write("ivan.yaml")
+        self.assertEqual(validate_records(self.root), [])
+
+    def test_reserved_name(self):
+        self.write("www.yaml", VALID.replace("subdomain: ivan", "subdomain: www"))
+        self.assertIn("reserved", " ".join(validate_records(self.root)).lower())
+
+    def test_invalid_subdomain(self):
+        self.write("bad.yaml", VALID.replace("subdomain: ivan", "subdomain: a.b"))
+        self.assertIn("subdomain", " ".join(validate_records(self.root)))
+
+    def test_uppercase_subdomain(self):
+        self.write("ivan.yaml", VALID.replace("subdomain: ivan", "subdomain: Ivan"))
+        self.assertIn("lowercase", " ".join(validate_records(self.root)).lower())
+
+    def test_invalid_target(self):
+        self.write("ivan.yaml", VALID.replace("ivan123.github.io", "example.com"))
+        self.assertIn("target", " ".join(validate_records(self.root)))
+
+    def test_repository_owner_must_match_target(self):
+        self.write("ivan.yaml", VALID.replace("github.com/ivan123/", "github.com/other/"))
+        self.assertIn("owner", " ".join(validate_records(self.root)).lower())
+
+    def test_duplicate_subdomain(self):
+        self.write("ivan.yaml")
+        self.write("other.yaml")
+        self.assertIn("duplicate", " ".join(validate_records(self.root)).lower())
+
+    def test_filename_must_match_subdomain(self):
+        self.write("other.yaml")
+        self.assertIn("filename", " ".join(validate_records(self.root)).lower())
+
+    def test_missing_reserved_names_configuration(self):
+        (self.root / "config" / "reserved-names.txt").unlink()
+        self.write("ivan.yaml")
+        self.assertIn("reserved-names.txt", " ".join(validate_records(self.root)))
+
+    def test_unexpected_file_in_records(self):
+        self.write("notes.txt", "hello")
+        self.assertIn("notes.txt", " ".join(validate_records(self.root)))
+
+    def test_symlink_is_rejected(self):
+        source = self.root / "outside.yaml"
+        source.write_text(VALID, encoding="utf-8")
+        (self.root / "records" / "ivan.yaml").symlink_to(source)
+        self.assertIn("symlink", " ".join(validate_records(self.root)).lower())
 
 
 if __name__ == "__main__":
