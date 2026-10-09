@@ -105,6 +105,20 @@ class ValidateRecordsTests(unittest.TestCase):
         self.write("ivan.yaml", VALID.replace("ivan123.github.io", "example.com"))
         self.assertIn("target", " ".join(validate_records(self.root)))
 
+    def test_github_username_length_limit(self):
+        for length in (39, 40):
+            with self.subTest(length=length):
+                username = "a" * length
+                content = VALID.replace("ivan123.github.io", f"{username}.github.io").replace(
+                    "github.com/ivan123/", f"github.com/{username}/"
+                )
+                self.write("ivan.yaml", content)
+                errors = validate_records(self.root)
+                if length == 39:
+                    self.assertEqual(errors, [])
+                else:
+                    self.assertIn("target", " ".join(errors))
+
     def test_repository_owner_must_match_target(self):
         self.write("ivan.yaml", VALID.replace("github.com/ivan123/", "github.com/other/"))
         self.assertIn("owner", " ".join(validate_records(self.root)).lower())

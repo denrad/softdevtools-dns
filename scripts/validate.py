@@ -10,6 +10,7 @@ import yaml
 FIELDS = frozenset({"subdomain", "type", "target", "repository"})
 MAX_BYTES = 8192
 LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\Z")
+GITHUB_USER = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?\Z")
 REPOSITORY = re.compile(
     r"https://github\.com/([A-Za-z0-9][A-Za-z0-9-]{0,62})/([A-Za-z0-9._-]+)\Z"
 )
@@ -114,8 +115,11 @@ def validate_records(root: Path) -> list[str]:
             errors.append(f"{label}: type must be CNAME")
         target = record["target"]
         target_user = target.removesuffix(".github.io")
-        if not target.endswith(".github.io") or not LABEL.fullmatch(target_user):
-            errors.append(f"{label}: target must be username.github.io")
+        if not target.endswith(".github.io") or not GITHUB_USER.fullmatch(target_user):
+            errors.append(
+                f"{label}: target must be username.github.io "
+                "with a 1–39 character GitHub username"
+            )
         repository = REPOSITORY.fullmatch(record["repository"])
         if repository is None:
             errors.append(f"{label}: repository must be a GitHub HTTPS URL")
