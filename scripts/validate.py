@@ -11,6 +11,7 @@ FIELDS = frozenset({"subdomain", "type", "target", "repository"})
 MAX_BYTES = 8192
 LABEL = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\Z")
 GITHUB_USER = re.compile(r"[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?\Z")
+MAX_PAGES_SUBDOMAIN_LENGTH = 63 - len(".softdevtools.ru")
 REPOSITORY = re.compile(
     r"https://github\.com/([A-Za-z0-9][A-Za-z0-9-]{0,62})/([A-Za-z0-9._-]+)\Z"
 )
@@ -101,6 +102,11 @@ def validate_records(root: Path) -> list[str]:
         if not LABEL.fullmatch(name):
             reason = "use one lowercase DNS label of 1–63 characters"
             errors.append(f"{label}: invalid subdomain {name!r}; {reason}")
+        elif len(name) > MAX_PAGES_SUBDOMAIN_LENGTH:
+            errors.append(
+                f"{label}: subdomain must be at most {MAX_PAGES_SUBDOMAIN_LENGTH} "
+                "characters for GitHub Pages HTTPS"
+            )
         if name in reserved:
             errors.append(f"{label}: subdomain {name!r} is reserved")
         if path.stem != name:

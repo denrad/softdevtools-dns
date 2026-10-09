@@ -22,9 +22,15 @@ TLS-сертификатов будет отдельной темой.
    Включите GitHub Pages и убедитесь, что страница доступна по исходному адресу
    GitHub Pages.
 2. Выберите свободный одноуровневый поддомен в `softdevtools.ru`.
+   Предпочтительный формат — `imya-familiya`, например
+   `ivan-ivanov.softdevtools.ru`: строчные латинские буквы и дефис между
+   именем и фамилией. Если имя занято, можно предложить суффикс `-2`.
+   Реальные имя и фамилию публиковать необязательно: псевдоним можно
+   согласовать с преподавателем. Метка до `.softdevtools.ru` должна быть не
+   длиннее 47 символов, чтобы GitHub Pages мог выпустить HTTPS-сертификат.
 3. После открытия этого репозитория для студентов сделайте **fork этого
    DNS-репозитория** в свой аккаунт и клонируйте fork на компьютер. Скопируйте
-   [пример заявки](../examples/ivan.yaml) в `records/<ваш-поддомен>.yaml`,
+   [пример заявки](../examples/ivan-ivanov.yaml) в `records/<ваш-поддомен>.yaml`,
    замените значения, сделайте commit и push в свой fork. Откройте PR из fork
    в `denrad/softdevtools-dns`, ветка `main`. Автоматическая проверка подскажет,
    если имя или формат неверны. Репозиторий сайта из шага 1 остаётся отдельным.
@@ -35,10 +41,10 @@ TLS-сертификатов будет отдельной темой.
 6. Проверьте DNS и страницу. Позже проверьте HTTPS без обхода проверки
    сертификата и включите `Enforce HTTPS`, когда настройка станет доступна.
 
-Содержимое примера будущей заявки `records/ivan.yaml`:
+Содержимое примера будущей заявки `records/ivan-ivanov.yaml`:
 
 ```yaml
-subdomain: ivan
+subdomain: ivan-ivanov
 type: CNAME
 target: ivan123.github.io
 repository: https://github.com/ivan123/my-lab-site
@@ -53,8 +59,8 @@ repository: https://github.com/ivan123/my-lab-site
 После появления записи можно посмотреть её и запросить страницу по HTTP:
 
 ```sh
-dig +short CNAME ivan.softdevtools.ru
-curl -i --max-time 10 http://ivan.softdevtools.ru/
+dig +short CNAME ivan-ivanov.softdevtools.ru
+curl -i --max-time 10 http://ivan-ivanov.softdevtools.ru/
 ```
 
 Если HTTP перенаправляет на HTTPS, это видно по коду ответа и заголовку

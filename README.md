@@ -43,7 +43,7 @@ GitHub Actions **не делает код безопасным само по с�
 
 ```text
 records/             сейчас пусто; позднее — одобренные заявки
-examples/ivan.yaml   пример заявки; не создаёт DNS-запись
+examples/ivan-ivanov.yaml  пример заявки; не создаёт DNS-запись
 config/              зарезервированные имена
 scripts/validate.py  локальная проверка заявок
 scripts/validate_pr.py  проверка файлов, изменённых в студенческом PR

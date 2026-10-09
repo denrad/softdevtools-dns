@@ -97,6 +97,15 @@ class ValidateRecordsTests(unittest.TestCase):
         self.write("bad.yaml", VALID.replace("subdomain: ivan", "subdomain: a.b"))
         self.assertIn("subdomain", " ".join(validate_records(self.root)))
 
+    def test_subdomain_fits_github_pages_https_name_limit(self):
+        allowed = "a" * 47  # 47 + len(".softdevtools.ru") == 63
+        rejected = "a" * 48
+        self.write(f"{allowed}.yaml", VALID.replace("subdomain: ivan", f"subdomain: {allowed}"))
+        self.assertEqual(validate_records(self.root), [])
+        (self.root / "records" / f"{allowed}.yaml").unlink()
+        self.write(f"{rejected}.yaml", VALID.replace("subdomain: ivan", f"subdomain: {rejected}"))
+        self.assertIn("47", " ".join(validate_records(self.root)))
+
     def test_uppercase_subdomain(self):
         self.write("ivan.yaml", VALID.replace("subdomain: ivan", "subdomain: Ivan"))
         self.assertIn("lowercase", " ".join(validate_records(self.root)).lower())
