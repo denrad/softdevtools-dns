@@ -1,6 +1,6 @@
 # Подготовка и сопровождение: черновик для преподавателя
 
-**Статус: закрытый пилот.** Workflow проверки PR и применения DNS работают.
+**Статус: публичный пилот.** Workflow проверки PR и применения DNS работают.
 После merge PR #4 запись `denis-radchenko.softdevtools.ru` создана через
 Cloudflare API и проверена на авторитетных NS и по HTTP. Проверенный HTTPS
 остаётся отдельным этапом.
@@ -31,7 +31,7 @@ Cloudflare API и проверена на авторитетных NS и по HT
 На текущем GitHub Free защита ветки для **приватного** репозитория недоступна:
 API GitHub возвращает требование GitHub Pro либо публичной видимости. Поэтому
 пункты о защите `main` и проверке внешнего fork завершаются **после открытия**
-репозитория. В закрытом пилоте только владелец имеет доступ на запись;
+репозитория. В пилоте только владелец имеет доступ на запись;
 `CLOUDFLARE_DNS_DEPLOY_ENABLED=true` уже включает запись после merge PR.
 Перед доступом студентов защитить `main` и проверить внешний fork.
 См. [условия защиты веток GitHub](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches).
