@@ -21,10 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Check out the merged, trusted tree
+      - name: Check out the trusted default branch
         uses: actions/checkout@v7
         with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
           persist-credentials: false
       - uses: actions/setup-python@v7
         with:
