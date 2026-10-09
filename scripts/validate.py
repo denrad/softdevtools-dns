@@ -1,5 +1,6 @@
 """Read-only validation of student DNS request files."""
 
+import argparse
 from pathlib import Path
 import re
 
@@ -74,6 +75,8 @@ def validate_records(root: Path) -> list[str]:
         reserved = set()
 
     records_dir = root / "records"
+    if records_dir.is_symlink():
+        return errors + ["records/: symlink directories are not allowed"]
     if not records_dir.is_dir():
         return errors + ["records/: directory is missing"]
 
@@ -119,3 +122,20 @@ def validate_records(root: Path) -> list[str]:
         elif target.endswith(".github.io") and repository.group(1).casefold() != target_user.casefold():
             errors.append(f"{label}: repository owner must match target user")
     return errors
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Check local student CNAME requests")
+    parser.add_argument("root", nargs="?", type=Path, default=Path("."))
+    args = parser.parse_args()
+    errors = validate_records(args.root)
+    if errors:
+        for error in errors:
+            print(error)
+        return 1
+    print("DNS requests valid")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

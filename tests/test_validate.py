@@ -1,4 +1,6 @@
 from pathlib import Path
+import subprocess
+import sys
 from tempfile import TemporaryDirectory
 import unittest
 
@@ -130,6 +132,26 @@ class ValidateRecordsTests(unittest.TestCase):
         source.write_text(VALID, encoding="utf-8")
         (self.root / "records" / "ivan.yaml").symlink_to(source)
         self.assertIn("symlink", " ".join(validate_records(self.root)).lower())
+
+    def test_records_directory_symlink_is_rejected(self):
+        (self.root / "records").rmdir()
+        outside = self.root / "outside"
+        outside.mkdir()
+        (self.root / "records").symlink_to(outside, target_is_directory=True)
+        self.assertIn("symlink", " ".join(validate_records(self.root)).lower())
+
+    def test_cli_reports_success_and_failure(self):
+        project = Path(__file__).resolve().parents[1]
+        command = [sys.executable, "-m", "scripts.validate", str(self.root)]
+        success = subprocess.run(command, cwd=project, capture_output=True, text=True)
+        self.assertEqual(success.returncode, 0)
+        self.assertIn("valid", success.stdout.lower())
+
+        self.write("ivan.yaml", VALID.replace("type: CNAME", "type: TXT"))
+        failure = subprocess.run(command, cwd=project, capture_output=True, text=True)
+        self.assertEqual(failure.returncode, 1)
+        self.assertIn("records/ivan.yaml", failure.stdout)
+        self.assertIn("CNAME", failure.stdout)
 
 
 if __name__ == "__main__":
