@@ -1,0 +1,4 @@
+subdomain: nikolaeva-sofia
+type: CNAME
+target: sofiaarlanova-dotcom.github.io/niolaevaS/
+repository: https://github.com/sofiaarlanova-dotcom/softdevtools-dns
