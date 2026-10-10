@@ -89,6 +89,7 @@ def reconcile(root: Path, client: CloudflareClient, *, apply: bool = False) -> l
     for path in sorted((root / "records").glob("*.yaml")):
         record, _ = parse_record(path)  # Full-tree validation above already succeeded.
         name = f"{record['subdomain']}.{ZONE}"
+        target = record["target"].lower()
         existing = client.records_at(name)
         # Verify exact names ourselves too; never trust a loose API filter.
         if any(not isinstance(item, dict) or item.get("name", "").rstrip(".").lower() != name for item in existing):
@@ -96,23 +97,23 @@ def reconcile(root: Path, client: CloudflareClient, *, apply: bool = False) -> l
         if existing:
             if len(existing) != 1 or not (
                 existing[0].get("type") == "CNAME"
-                and existing[0].get("content", "").rstrip(".").lower() == record["target"]
+                and existing[0].get("content", "").rstrip(".").lower() == target
                 and existing[0].get("proxied") is False
                 and existing[0].get("comment") == OWNER_COMMENT
             ):
                 raise DnsError(f"{name}: existing DNS record is not this project's CNAME")
-            actions.append(f"unchanged {name} -> {record['target']}")
+            actions.append(f"unchanged {name} -> {target}")
             continue
         payload = {
             "type": "CNAME",
             "name": name,
-            "content": record["target"],
+            "content": target,
             "ttl": 1,
             "proxied": False,
             "comment": OWNER_COMMENT,
         }
         to_create.append(payload)
-        actions.append(f"would create {name} -> {record['target']}")
+        actions.append(f"would create {name} -> {target}")
     # Finish all conflict checks before the first write.
     if apply:
         for payload in to_create:

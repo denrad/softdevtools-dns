@@ -37,9 +37,11 @@ repository: https://github.com/ivan123/my-lab-site
 дефиса по краям; только `CNAME` на `username.github.io`, DNS only
 (`proxied=false`). Список зарезервированных имён задаётся преподавателем.
 Не принимаются пользовательские A/AAAA/MX/TXT, wildcard, вложенные поддомены
-и URL вместо DNS-имени. Валидатор принимает только нижний регистр и метку
-длиной до 47 символов: вместе с `.softdevtools.ru` полное имя получается
-короче 64 символов, что [требуется GitHub Pages для HTTPS-сертификата](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https).
+и URL вместо DNS-имени. Для `subdomain` валидатор принимает только нижний
+регистр и метку длиной до 47 символов: вместе с `.softdevtools.ru` полное имя
+получается короче 64 символов, что [требуется GitHub Pages для HTTPS-сертификата](https://docs.github.com/en/pages/getting-started-with-github-pages/securing-your-github-pages-site-with-https).
+Регистр GitHub-логина в `target` может быть любым; перед созданием DNS-записи
+цель приводится к нижнему регистру.
 
 Предпочтительный формат студенческого имени — `imya-familiya`, например
 `ivan-ivanov.softdevtools.ru`: имя и фамилия записываются латиницей в нижнем
