@@ -119,9 +119,14 @@ def validate_records(root: Path) -> list[str]:
 
         if record["type"] != "CNAME":
             errors.append(f"{label}: type must be CNAME")
-        target = record["target"]
+        raw_target = record["target"]
+        target = raw_target.lower()
         target_user = target.removesuffix(".github.io")
-        if not target.endswith(".github.io") or not GITHUB_USER.fullmatch(target_user):
+        if (
+            not raw_target.isascii()
+            or not target.endswith(".github.io")
+            or not GITHUB_USER.fullmatch(target_user)
+        ):
             errors.append(
                 f"{label}: target must be username.github.io "
                 "with a 1–39 character GitHub username"
@@ -129,7 +134,7 @@ def validate_records(root: Path) -> list[str]:
         repository = REPOSITORY.fullmatch(record["repository"])
         if repository is None:
             errors.append(f"{label}: repository must be a GitHub HTTPS URL")
-        elif target.endswith(".github.io") and repository.group(1).casefold() != target_user.casefold():
+        elif target.endswith(".github.io") and repository.group(1).lower() != target_user:
             errors.append(f"{label}: repository owner must match target user")
     return errors
 
