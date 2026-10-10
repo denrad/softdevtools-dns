@@ -1,0 +1,4 @@
+subdomain: matushin-ilya
+type: CNAME
+target: ucheba20232027-cpu.github.io
+repository: https://github.com/ucheba20232027-cpu/lab05_Matushin_IM_23-IS-12s
