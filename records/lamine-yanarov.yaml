@@ -1,0 +1,4 @@
+subdomain: lamine-yanarov
+type: CNAME
+target: LamineYanarov.github.io
+repository: https://github.com/LamineYanarov/lab05-pages-walkthrough
