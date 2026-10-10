@@ -1,0 +1,4 @@
+subdomain: pilot-denrad-dev
+type: CNAME
+target: denrad-dev.github.io
+repository: https://github.com/denrad-dev/softdevtools-pages-pilot
