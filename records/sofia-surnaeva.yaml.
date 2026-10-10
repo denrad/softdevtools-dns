@@ -1,0 +1,4 @@
+subdomain: sofia-surnaeva
+type: CNAME
+target: sovameo.github.io
+repository: https://github.com/sovameo/my-first-lab5
