@@ -57,6 +57,23 @@ class ApplyDnsTests(unittest.TestCase):
         self.assertEqual(reconcile(self.root, client, apply=True), ["unchanged ivan.softdevtools.ru -> ivan123.github.io"])
         self.assertEqual(client.created, [])
 
+    def test_mixed_case_target_is_published_and_compared_as_lowercase(self):
+        self.add_record(target="Ivan123.github.io")
+        client = FakeClient()
+        self.assertEqual(reconcile(self.root, client, apply=True), [
+            "created ivan.softdevtools.ru -> ivan123.github.io"
+        ])
+        self.assertEqual(client.created[0]["content"], "ivan123.github.io")
+
+        existing = FakeClient({"ivan.softdevtools.ru": [{
+            "name": "ivan.softdevtools.ru", "type": "CNAME", "content": "ivan123.github.io",
+            "proxied": False, "comment": OWNER_COMMENT,
+        }]})
+        self.assertEqual(reconcile(self.root, existing, apply=True), [
+            "unchanged ivan.softdevtools.ru -> ivan123.github.io"
+        ])
+        self.assertEqual(existing.created, [])
+
     def test_foreign_record_blocks_all_writes(self):
         self.add_record("anna", "anna123.github.io")
         self.add_record()

@@ -114,6 +114,20 @@ class ValidateRecordsTests(unittest.TestCase):
         self.write("ivan.yaml", VALID.replace("ivan123.github.io", "example.com"))
         self.assertIn("target", " ".join(validate_records(self.root)))
 
+    def test_target_accepts_github_username_case(self):
+        content = VALID.replace("ivan123.github.io", "Ivan123.GitHub.IO").replace(
+            "github.com/ivan123/", "github.com/IVAN123/"
+        )
+        self.write("ivan.yaml", content)
+        self.assertEqual(validate_records(self.root), [])
+
+    def test_target_still_rejects_non_ascii_username(self):
+        content = VALID.replace("ivan123.github.io", "Kvan123.github.io").replace(
+            "github.com/ivan123/", "github.com/kvan123/"
+        )
+        self.write("ivan.yaml", content)
+        self.assertIn("target", " ".join(validate_records(self.root)))
+
     def test_github_username_length_limit(self):
         for length in (39, 40):
             with self.subTest(length=length):
