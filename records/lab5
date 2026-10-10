@@ -1,0 +1,4 @@
+subdomain: KUZNETSOVKOLYA
+type: CNAME
+target: kuznetsovkolya.github.io
+repository: https://kuznetsovkolya.github.io/-/
