@@ -1,4 +1,4 @@
-subdomain: vova-kuznetsov
+subdomain: kuznetsovkolya.softdevtools.ru
 type: CNAME
 target: kuznetsovkolya.github.io/vova/
 repository: kuznetsovkolya.softdevtools.ru
