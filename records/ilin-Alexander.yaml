@@ -1,0 +1,4 @@
+subdomain: ilin-alexander
+type: CNAME
+target: triviallcheb-alt.github.io
+repository: https://github.com/triviallcheb-alt/softdevtools-dns-5
