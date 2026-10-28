@@ -1,0 +1,4 @@
+subdomain: danilov-anton
+type: CNAME
+target: kkyrasinn.github.io
+repository: https://github.com/Kkyrasinn/my-first-page
