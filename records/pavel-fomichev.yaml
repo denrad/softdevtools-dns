@@ -1,0 +1,4 @@
+subdomain: pavel-fomichev
+type: CNAME
+target: pavel475.github.io
+repository: https://github.com/pavel475/my-simple-page
