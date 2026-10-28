@@ -1,0 +1,4 @@
+subdomain: ilya-chubaka
+type: CNAME
+target: Ilatrion.github.io
+repository: https://github.com/Ilatrion/my-first-page.git
