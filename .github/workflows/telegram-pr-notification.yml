@@ -20,6 +20,11 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           PR_AUTHOR: ${{ github.event.pull_request.user.login }}
         run: |
+          if [[ -z "$TELEGRAM_BOT_TOKEN" || -z "$TELEGRAM_CHAT_ID" ]]; then
+            echo "::notice::Telegram notification skipped because TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is not configured."
+            exit 0
+          fi
+
           message="$(jq -n -r \
             --arg repo "$GITHUB_REPOSITORY" \
             --arg number "$PR_NUMBER" \
