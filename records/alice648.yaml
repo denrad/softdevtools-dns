@@ -1,0 +1,4 @@
+subdomain: alice648
+type: CNAME
+target: alice648.github.io
+repository: https://github.com/alice648/my-first-page
