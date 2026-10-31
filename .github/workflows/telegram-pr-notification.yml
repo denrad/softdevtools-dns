@@ -1,0 +1,34 @@
+name: Telegram PR notification
+
+on:
+  pull_request:
+    types: [opened]
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          message="$(jq -n -r \
+            --arg repo "$GITHUB_REPOSITORY" \
+            --arg number "$PR_NUMBER" \
+            --arg title "$PR_TITLE" \
+            --arg author "$PR_AUTHOR" \
+            --arg url "$PR_URL" \
+            '"New pull request in " + $repo + "\n#" + $number + " " + $title + "\nAuthor: " + $author + "\n" + $url')"
+          curl --fail --silent --show-error \
+            --request POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
+            --data-urlencode "text=${message}" \
+            --output /dev/null
