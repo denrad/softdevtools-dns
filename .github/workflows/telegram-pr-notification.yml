@@ -26,7 +26,7 @@ jobs:
             --arg title "$PR_TITLE" \
             --arg author "$PR_AUTHOR" \
             --arg url "$PR_URL" \
-            '["🔔 Новый pull request", "Репозиторий: " + $repo, "#" + $number + " " + $title, "Автор: @" + $author, $url] | join("\n")')"
+            '["🔔 Новый pull request", "Репозиторий: " + $repo, "#" + $number + " " + $title, "Автор: https://github.com/" + $author, $url] | join("\n")')"
           curl --fail --silent --show-error \
             --request POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
