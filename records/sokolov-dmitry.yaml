@@ -1,0 +1,4 @@
+subdomain: sokolov-dmitry
+type: CNAME
+target: sokolovdmitryranepa-svg.github.io
+repository: https://github.com/sokolovdmitryranepa-svg/lab05-sokolov
