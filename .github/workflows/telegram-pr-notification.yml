@@ -1,4 +1,4 @@
-name: Telegram PR notification
+name: Telegram уведомление о PR
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Telegram notification
+      - name: Отправить сообщение в Telegram
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
@@ -26,7 +26,7 @@ jobs:
             --arg title "$PR_TITLE" \
             --arg author "$PR_AUTHOR" \
             --arg url "$PR_URL" \
-            '"New pull request in " + $repo + "\n#" + $number + " " + $title + "\nAuthor: " + $author + "\n" + $url')"
+            '["🔔 Новый pull request", "Репозиторий: " + $repo, "#" + $number + " " + $title, "Автор: @" + $author, $url] | join("\n")')"
           curl --fail --silent --show-error \
             --request POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" \
