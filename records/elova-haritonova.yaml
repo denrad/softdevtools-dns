@@ -1,0 +1,4 @@
+subdomain: elova-haritonova
+type: CNAME
+target: KU96240.github.io
+repository: https://github.com/KU96240/lab05-first-page
