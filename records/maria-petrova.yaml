@@ -1,0 +1,4 @@
+subdomain: maria-petrova
+type: CNAME
+target: gadshiska.github.io
+repository: https://github.com/GADSHISKA/my-first-page
