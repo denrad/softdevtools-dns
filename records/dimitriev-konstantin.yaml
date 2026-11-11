@@ -1,0 +1,4 @@
+subdomain: dimitriev-konstantin
+type: CNAME
+target: dimitrievks.github.io
+repository: https://github.com/DimitrievKS/my-first-page
