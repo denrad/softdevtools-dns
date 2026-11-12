@@ -1,4 +1,4 @@
-subdomain: isaev-makar # Ваше имя поддомена
+subdomain: iseav-makar
 type: CNAME
-target: ваш-логин.github.io # Ваш логин на GitHub (без https)
-repository: https://github.com/ваш-логин/my-first-page # Ссылка на ваш репозиторий с сайтом
+target: meymar9868barn-art.github.io
+repository: https://github.com/meymar9868barn-art/my-first-page
