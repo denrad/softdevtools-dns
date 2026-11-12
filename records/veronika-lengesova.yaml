@@ -1,0 +1,4 @@
+subdomain: veronika-lengesova
+type: CNAME
+target: lengesovanika1-pixel.github.io
+repository: https://github.com/lengesovanika1-pixel/my-first-page
