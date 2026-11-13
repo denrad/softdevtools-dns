@@ -1,0 +1,4 @@
+subdomain: qwess1sad
+type: CNAME
+target: qwess1sad.github.io
+repository: https://github.com/qwess1sad/lab-05-page
