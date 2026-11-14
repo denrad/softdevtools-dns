@@ -1,0 +1,4 @@
+subdomain: lateforse-lab5
+type: CNAME
+target: lateforse.github.io
+repository: https://github.com/Lateforse/lab05-pages
