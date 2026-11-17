@@ -1,0 +1,4 @@
+subdomain: requiem-about-addicton
+type: CNAME
+target: requiem-about-addicton.github.io
+repository: https://github.com/requiem-about-addicton/my-first-page
