@@ -1,0 +1,4 @@
+subdomain: roman-nikolaev
+type: CNAME
+target: rmnikevg-cmd.github.io
+repository: https://github.com/rmnikevg-cmd/my-first-page
