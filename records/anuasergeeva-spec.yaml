@@ -1,0 +1,4 @@
+subdomain: anuasergeeva-spec
+type: CNAME
+target: anuasergeeva-spec.github.io
+repository: https://github.com/anuasergeeva-spec/my-first-page
